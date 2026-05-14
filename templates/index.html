@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talabalar Reyting Tizimi</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i> RankingSystem
+            </div>
+            <div class="header-actions">
+                <button class="btn" onclick="document.getElementById('addModal').style.display='flex'">
+                    <i class="fas fa-plus"></i> Talaba qo'shish
+                </button>
+            </div>
+        </header>
+
+        <section class="rating-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>O'rin</th>
+                        <th>F.I.SH</th>
+                        <th>Yo'nalish</th>
+                        <th>Weighted GPA (Pandas)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if ranking %}
+                        {% for student in ranking %}
+                        <tr>
+                            <td>#{{ loop.index }}</td>
+                            <td><strong>{{ student.FullName }}</strong></td>
+                            <td>{{ student.Major }}</td>
+                            <td>
+                                <span class="gpa-badge">{{ student.weighted_gpa }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 3rem;">
+                                <i class="fas fa-info-circle"></i> Hozircha ma'lumotlar yo'q
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Soddalashtirilgan Modal -->
+    <div id="addModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000;">
+        <div style="background:var(--bg-secondary); padding:2rem; border-radius:1rem; width:400px; border:1px solid var(--glass-border);">
+            <h2 style="margin-bottom:1.5rem;">Yangi talaba</h2>
+            <form action="/add_student" method="post">
+                <input type="text" name="full_name" placeholder="Ism Familiya" required style="width:100%; padding:0.8rem; margin-bottom:1rem; border-radius:0.5rem; border:none; background:var(--bg-primary); color:white;">
+                <input type="text" name="major" placeholder="Yo'nalish" required style="width:100%; padding:0.8rem; margin-bottom:1.5rem; border-radius:0.5rem; border:none; background:var(--bg-primary); color:white;">
+                <div style="display:flex; gap:1rem;">
+                    <button type="submit" class="btn" style="flex:1;">Saqlash</button>
+                    <button type="button" class="btn" onclick="document.getElementById('addModal').style.display='none'" style="flex:1; background:grey;">Yopish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
